@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a1a1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Secretària" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Secretària — Milgrup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-top">
+        <h1 class="brand">Secretària</h1>
+        <button class="settings-btn" id="settings-btn" aria-label="Configuració" title="Configuració">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+      <span class="date" id="today"></span>
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="pro" role="tab">Professional <span class="count" id="count-pro">0</span></button>
+        <button class="tab" data-tab="personal" role="tab">Personal <span class="count" id="count-personal">0</span></button>
+        <button class="tab" data-tab="arxiu" role="tab">Arxiu</button>
+      </nav>
+    </header>
+
+    <div class="col-header" id="col-header">
+      <span class="ch-check"></span>
+      <span class="ch-task">Tasca</span>
+      <span class="ch-due">Venç</span>
+      <span class="ch-prio">Prio</span>
+      <span class="ch-actions"></span>
+    </div>
+
+    <main class="main">
+      <section class="list-section" id="list-pro">
+        <ul class="task-list" id="tasks-pro"></ul>
+        <p class="empty" id="empty-pro">Sense tasques professionals pendents.</p>
+      </section>
+      <section class="list-section hidden" id="list-personal">
+        <ul class="task-list" id="tasks-personal"></ul>
+        <p class="empty" id="empty-personal">Sense tasques personals pendents.</p>
+      </section>
+      <section class="list-section hidden" id="list-arxiu">
+        <div class="arxiu-tabs">
+          <button class="sub-tab active" data-arxiu="pro">Professional</button>
+          <button class="sub-tab" data-arxiu="personal">Personal</button>
+        </div>
+        <ul class="task-list" id="tasks-arxiu"></ul>
+        <p class="empty" id="empty-arxiu">L'arxiu és buit. Les tasques fetes fa més de 7 dies apareixeran aquí.</p>
+      </section>
+    </main>
+
+    <footer class="composer">
+      <div class="composer-meta-options" id="meta-options">
+        <button class="meta-chip" id="deadline-chip" aria-label="Afegir venciment">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span id="deadline-label">Venciment</span>
+          <input type="date" id="deadline-input" />
+        </button>
+        <button class="meta-chip" id="priority-chip" data-priority="">
+          <span class="priority-dot" id="priority-dot"></span>
+          <span id="priority-label">Prioritat</span>
+        </button>
+        <label class="remind-toggle" id="remind-toggle">
+          <input type="checkbox" id="remind-check" />
+          <span>Avisa'm un dia abans</span>
+        </label>
+      </div>
+
+      <div class="composer-row">
+        <input
+          type="text"
+          id="task-input"
+          class="task-input"
+          placeholder="Anota una tasca..."
+          autocomplete="off"
+          enterkeyhint="done"
+        />
+        <button class="mic-btn" id="mic-btn" aria-label="Dictar tasca" title="Dictar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </button>
+        <button class="add-btn" id="add-btn" aria-label="Afegir tasca">+</button>
+      </div>
+
+      <div class="composer-hint">
+        <span class="hint" id="mic-status"></span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Menú prioritat -->
+  <div class="popover hidden" id="priority-popover">
+    <button class="pop-item" data-priority="urgent"><span class="priority-dot urgent"></span> Urgent</button>
+    <button class="pop-item" data-priority="setmana"><span class="priority-dot setmana"></span> Aquesta setmana</button>
+    <button class="pop-item" data-priority=""><span class="priority-dot baixa"></span> Quan pugui</button>
+  </div>
+
+  <!-- Modal configuració -->
+  <div class="modal hidden" id="settings-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Configuració</h2>
+        <button class="close-btn" id="close-settings">×</button>
+      </div>
+      <div class="modal-body">
+        <label class="field">
+          <span>Clau API d'Anthropic (Claude)</span>
+          <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off" />
+          <small>Si la deixes buida, l'app funciona normal però sense interpretació intel·ligent del dictat. La clau es guarda només al teu navegador.</small>
+        </label>
+        <button class="save-btn" id="save-settings">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
